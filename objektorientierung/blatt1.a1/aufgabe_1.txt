@@ -1,0 +1,5 @@
+Unser Paketname: de.hs_mannheim.informatik.ib2_2016.TPE.ue1.gr2_5
+
+Es kann zu keinen Kollisionen mit anderen Gruppen kommen, da es nie wieder eine zweite Gruppe 2_5 geben wird,
+die eine Übung 1 im Fach TPE im Sommersemester 2016 (IB2) im Studiengang Informatik in der Hochschule Mannheim in
+Deutschland absolvieren wird.
