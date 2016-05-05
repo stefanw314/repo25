@@ -12,6 +12,11 @@ public class EisdieleMain {
 		EisdieleKoeln eisdieleTest2 = new EisdieleKoeln(new EisKoeln());
 		eisdieleTest2.bestellen("Spaghettieis");
 		System.out.println("_________________________");
+		
+		System.out.println("Bestelle ein Spaghettieis in Speyer: ");
+		EisdieleSpeyer eisdieleTest3 = new EisdieleSpeyer(new EisSpeyer());
+		eisdieleTest3.bestellen("Nussbecher");
+		System.out.println("_________________________");
 	}
 	
 }

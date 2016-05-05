@@ -1,0 +1,10 @@
+Wie haben wir die Klassen abgeändert, damit wir einen regionalen Unterschied machen können?
+- Eis und Eisdiele abstrakt gemacht
+- Unterklassen für eine bestimmte Eisdiele erstellt und für dessen Eis (z.B EisdieleMannheim und EisMannheim)
+- Konstruktoren in den Unterklassen erstellt, die über super() auf den Standard-Konstruktor der abstraken Klasse zugreifen
+
+Zusätzliche Klassen und Methoden?
+- Konstruktor: Die Eisdiele erhält im Konstruktor ein Eisobjekt der jeweiligen Stadt
+
+Was muss in der main()-Methode passieren, um die jeweiligen Eisdielen anzusprechen?
+- Objekt der Unterklasse (z.B EisdieleMannheim) aufrufen und als Parameter EisMannheim mitgeben
