@@ -77,7 +77,7 @@ public class MyBTree implements BTree {
 		//Find leaf where you should insert the value
 		while(!searchNode.isLeaf()) {
 			int insertPosition = searchNode.findChildPosition(insertValue);
-			searchNode = searchNode.getNode(insertPosition);
+			searchNode = searchNode.getChildNode(insertPosition);
 			searchListPositon++;
 			//Save all nodes on this path
 			nodeSearchList[searchListPositon] = searchNode;
@@ -119,14 +119,14 @@ public class MyBTree implements BTree {
 
 			//Step 2: Case 1: Insert value and right part of node
 			insertNode.setValue(insertValue, insertPosition);
-			insertNode.setNode(rightPart, insertPosition + 1);
+			insertNode.setChildNode(rightPart, insertPosition + 1);
 		}
 		//Step 2: Case 2: We need a new root node
 		else if(needNewRoot) 
 		{
 			insertNode.setValue(insertValue, 0);
-			insertNode.setNode(leftPart, 0);
-			insertNode.setNode(rightPart, 1);
+			insertNode.setChildNode(leftPart, 0);
+			insertNode.setChildNode(rightPart, 1);
 		}
 		//Step 2: Case 3: Node has no space and we don't need a new root
 		else 
@@ -143,7 +143,7 @@ public class MyBTree implements BTree {
 
 			//Step 2: Case 3: Insert value and right part of node
 			insertNode.setValue(insertValue, insertPosition);
-			insertNode.setNode(rightPart, insertPosition + 1);
+			insertNode.setChildNode(rightPart, insertPosition + 1);
 
 			//Step 2: Case 3: Save mid value and delete in old node
 			Integer midValue = insertNode.values[order];
@@ -197,15 +197,15 @@ public class MyBTree implements BTree {
 	private boolean containsRecursive(Integer searchValue, Node node) {
 		int i = 0;
 		//Go through node
-		while(node.getValue(i) != null || node.getNode(i) != null) {
+		while(node.getValue(i) != null || node.getChildNode(i) != null) {
 			//If value is larger, go to the right
 			if(node.getValue(i) != null && node.getValue(i) < searchValue) {
 				i++;
 			}
 			//If path to the child node was found, open recursion
 			else if(((node.getValue(i) != null && node.getValue(i) > searchValue)) || (node.getValue(i) == null)) {
-				if(node.getNode(i) != null) {
-					return containsRecursive(searchValue, node.getNode(i));
+				if(node.getChildNode(i) != null) {
+					return containsRecursive(searchValue, node.getChildNode(i));
 				}
 				//Returns false if there is no path
 				return false;
@@ -232,8 +232,8 @@ public class MyBTree implements BTree {
 				int i = 0;
 				//Adding child nodes to queue
 				while(i < ((2 * order) + 1) 
-						&& currentNode.getNode(i) != null) {
-					queue.add(currentNode.getNode(i));
+						&& currentNode.getChildNode(i) != null) {
+					queue.add(currentNode.getChildNode(i));
 					i++;
 				}
 				//Counting of values
@@ -259,8 +259,8 @@ public class MyBTree implements BTree {
 			//Go the left part until end and count every childNode
 			while(save.getValue(0) != null && !pathEnd) {
 				i++;
-				if(save.getNode(0) != null) {
-					save = save.getNode(0);
+				if(save.getChildNode(0) != null) {
+					save = save.getChildNode(0);
 				}
 				else {
 					pathEnd = true;
@@ -297,8 +297,8 @@ public class MyBTree implements BTree {
 		//If node is not empty
 		if(elementExists) {
 			//If there is a child node -> recursion
-			if(node.getNode(counter) != null) {
-				return getMaxRecursive(node.getNode(counter));
+			if(node.getChildNode(counter) != null) {
+				return getMaxRecursive(node.getChildNode(counter));
 			}
 			//If there is no child node -> return last Integer
 			else {
@@ -329,8 +329,8 @@ public class MyBTree implements BTree {
 		//Look at the first value
 		if(node.getValue(0) != null) {
 			//Searches for available first childNode
-			if(node.getNode(0) != null) {
-				return getMinRecursive(node.getNode(0));
+			if(node.getChildNode(0) != null) {
+				return getMinRecursive(node.getChildNode(0));
 			}
 			//If there is no first childNode
 			else {
@@ -360,8 +360,8 @@ public class MyBTree implements BTree {
             int i = 0;
             //Finds all nodes and adds them to the queue
             while(i < ((2 * order) + 1) 
-                    && currentNode.getNode(i) != null) {
-                queue.add(currentNode.getNode(i));
+                    && currentNode.getChildNode(i) != null) {
+                queue.add(currentNode.getChildNode(i));
                 i++;
             }
             //Insert all values from current node
@@ -387,18 +387,17 @@ public class MyBTree implements BTree {
 	 */
 	private void printInorderRecursive(Node currentNode) {
 		//Open recursion with first node
-		if(!currentNode.isLeaf()) {
-			printInorderRecursive(currentNode.getNode(0));
-		}
-		
-		//Print the node
-		currentNode.printNode();
-		
-		//Open all other recursion for the nodes
-		int position = 1;
-		while(position < ((2 * order) + 2) && currentNode.getNode(position) != null) {
-			printInorderRecursive(currentNode.getNode(position));
-			position++;
+		if(currentNode != null) {
+			//Open all other recursion for the nodes
+			int position = 0;
+			while(position < (2 * order + 1)) {
+				printInorderRecursive(currentNode.getChildNode(position));
+				if(currentNode.getValue(position) != null) {
+					System.out.println(currentNode.getValue(position));
+				}
+				position++;
+			}
+			printInorderRecursive(currentNode.getChildNode(position));
 		}
 	}
 
@@ -417,13 +416,13 @@ public class MyBTree implements BTree {
 	private void printPostorderRecursive(Node currentNode) {
 		//Open recursion with first node
 		if(!currentNode.isLeaf()) {
-			printInorderRecursive(currentNode.getNode(0));
+			printInorderRecursive(currentNode.getChildNode(0));
 		}
 		
 		//Open recursion for all other nodes
 		int position = 1;
-		while(position < ((2 * order) + 2) && currentNode.getNode(position) != null) {
-			printInorderRecursive(currentNode.getNode(position));
+		while(position < ((2 * order) + 2) && currentNode.getChildNode(position) != null) {
+			printInorderRecursive(currentNode.getChildNode(position));
 			position++;
 		}
 		
@@ -444,19 +443,18 @@ public class MyBTree implements BTree {
 	 * @description: recursive function of printPreorder()
 	 */
 	private void printPreorderRecursive(Node currentNode) {
-		//At first print the node
-		currentNode.printNode();
-		
-		//Open recursion with first node if it is not a leaf
-		if(!currentNode.isLeaf()) {
-			printInorderRecursive(currentNode.getNode(0));
-		}
-		
-		//Open recursion for all other nodes
-		int position = 1;
-		while(position < ((2 * order) + 2) && currentNode.getNode(position) != null) {
-			printInorderRecursive(currentNode.getNode(position));
-			position++;
+		//Open recursion with first node
+		if(currentNode != null) {
+			//Open all other recursion for the nodes
+			int position = 0;
+			while(position < (2 * order + 1)) {
+				if(currentNode.getValue(position) != null) {
+					System.out.println(currentNode.getValue(position));
+				}
+				printInorderRecursive(currentNode.getChildNode(position));
+				position++;
+			}
+			printInorderRecursive(currentNode.getChildNode(position));
 		}
 	}
 
@@ -472,8 +470,8 @@ public class MyBTree implements BTree {
 			Node currentNode = (Node) queue.poll();
 			int i = 0;
 			//Find all nodes and save to queue
-			while(i < ((2 * order) + 1) && currentNode.getNode(i) != null) {
-				queue.add(currentNode.getNode(i));
+			while(i < ((2 * order) + 1) && currentNode.getChildNode(i) != null) {
+				queue.add(currentNode.getChildNode(i));
 				i++;
 			}
 			//Print currentNode
@@ -508,14 +506,14 @@ public class MyBTree implements BTree {
 			//Set value at position counter
 			copyNode.setValue(oldNode.getValue(counter), counter);
 			//Copy this node recursively
-			if(oldNode.getNode(counter) != null) {
-				copyNode.setNode(cloneRecursive(oldNode.getNode(counter)), counter);
+			if(oldNode.getChildNode(counter) != null) {
+				copyNode.setChildNode(cloneRecursive(oldNode.getChildNode(counter)), counter);
 			}
 			counter++;
 		}
-		if(oldNode.getNode(counter) != null) {
+		if(oldNode.getChildNode(counter) != null) {
 			//Copies the last node recursively
-			copyNode.setNode(cloneRecursive(oldNode.getNode(counter)), counter);
+			copyNode.setChildNode(cloneRecursive(oldNode.getChildNode(counter)), counter);
 		}
 		return copyNode;
 	}

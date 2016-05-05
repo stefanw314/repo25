@@ -9,7 +9,7 @@ public class MyBTreeMenu {
 		public static void main(String[] args) {
 
 			for (int i = 0; i < la.length; i++){
-				la[i] = new MyBTree(2); //create objects
+				la[i] = new MyBTree(1); //create objects
 			}
 
 			int wl = 0;
@@ -54,7 +54,7 @@ public class MyBTreeMenu {
 					la[wl].insert((Integer) z);
 					break;
 				case 6:
-					String filename = "filename";
+					String filename = "t.txt";
 					la[wl].insert(filename);
 					break;
 				case 7:

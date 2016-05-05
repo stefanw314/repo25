@@ -56,7 +56,7 @@ public class Node {
 	 * @param position
 	 * @return a child node
 	 */
-	public Node getNode(int position) {
+	public Node getChildNode(int position) {
 		return childNodes[position];
 	}
 
@@ -65,7 +65,7 @@ public class Node {
 	 * @param node: the node to be set
 	 * @param position: at what position should the node be set
 	 */
-	public void setNode(Node node, int position) {
+	public void setChildNode(Node node, int position) {
 		childNodes[position] = node;
 	}
 	
@@ -134,11 +134,11 @@ public class Node {
 		//Goes through all values starting at from and copies value and child node
 		while(from < ((2 * order) + 1)) {
 			copyNode.setValue(values[from], i);
-			copyNode.setNode(childNodes[from], i);
+			copyNode.setChildNode(childNodes[from], i);
 			from++;
 			i++;
 		}
-		copyNode.setNode(childNodes[from], i);
+		copyNode.setChildNode(childNodes[from], i);
 		return copyNode;
 	}
 	
@@ -150,10 +150,10 @@ public class Node {
 		//Goes through all values starting at from
 		while(from < ((2 * order) + 1)) {
 			setValue(null, from);
-			setNode(null, from);
+			setChildNode(null, from);
 			from++;
 		}
-		setNode(null, from);
+		setChildNode(null, from);
 	}
 	
 	/**
