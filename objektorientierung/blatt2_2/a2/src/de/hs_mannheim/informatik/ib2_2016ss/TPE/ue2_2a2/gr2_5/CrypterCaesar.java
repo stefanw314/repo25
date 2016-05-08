@@ -46,6 +46,8 @@ public class CrypterCaesar implements Crypter {
 				decryptedNextChar -= 26;
 			}
 			
+			decryptedNextChar = (char) (decryptedNextChar - 'A' + 'a');
+			
 			//Set the values
 			plainChars[charsPosition] = alphabetLetter;
 			encryptedChars[charsPosition] = encryptedNextChar;

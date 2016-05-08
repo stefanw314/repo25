@@ -10,7 +10,7 @@ public class CrypterCaesarTest {
 	public void encryptDecryptTest() {
 		CrypterCaesar caesar = CrypterCaesar.getInstance(3);
 		String toBeTested = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		assertEquals(toBeTested, caesar.decrypt((caesar.encrypt(toBeTested))));
+		assertEquals(toBeTested.toLowerCase(), caesar.decrypt((caesar.encrypt(toBeTested))));
 	}
 	
 	@Test
@@ -24,7 +24,7 @@ public class CrypterCaesarTest {
 	public void decryptTest() {
 		CrypterCaesar caesar = CrypterCaesar.getInstance(1);
 		String toBeTested = "BCDYZA";
-		assertEquals("ABCXYZ", caesar.decrypt(toBeTested));
+		assertEquals("abcxyz", caesar.decrypt(toBeTested));
 	}
 	
 	@Test
@@ -32,19 +32,19 @@ public class CrypterCaesarTest {
 		CrypterCaesar caesarPositive = CrypterCaesar.getInstance(260);
 		String toBeTested1 = "az";
 		assertEquals("AZ", caesarPositive.encrypt(toBeTested1));
-		assertEquals("AZ", caesarPositive.decrypt(toBeTested1));
+		assertEquals("az", caesarPositive.decrypt(toBeTested1));
 		
 		CrypterCaesar caesarNegative = CrypterCaesar.getInstance(-260);
 		String toBeTested2 = "az";
 		assertEquals("AZ", caesarNegative.encrypt(toBeTested2));
-		assertEquals("AZ", caesarNegative.decrypt(toBeTested2));
+		assertEquals("az", caesarNegative.decrypt(toBeTested2));
 	}
 	
 	@Test
 	public void zeroShiftTest() {
 		CrypterCaesar caesar = CrypterCaesar.getInstance(0);
 		String toBeTested = "AZ";
-		assertEquals("AZ", caesar.decrypt(toBeTested));
+		assertEquals("az", caesar.decrypt(toBeTested));
 		assertEquals("AZ", caesar.encrypt(toBeTested));
 	}
 	
@@ -53,7 +53,7 @@ public class CrypterCaesarTest {
 		CrypterCaesar caesar = CrypterCaesar.getInstance(-3);
 		String toBeTested = "az";
 		assertEquals("XW", caesar.encrypt(toBeTested));
-		assertEquals("DC", caesar.decrypt(toBeTested));
+		assertEquals("dc", caesar.decrypt(toBeTested));
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class CrypterCaesarTest {
 		CrypterCaesar caesar = CrypterCaesar.getInstance(3);
 		String toBeTested = "azäöüß&/732-";
 		assertEquals("DCäöüß&/732-", caesar.encrypt(toBeTested));
-		assertEquals("XWäöüß&/732-", caesar.decrypt(toBeTested));
+		assertEquals("xwäöüß&/732-", caesar.decrypt(toBeTested));
 	}
 
 }
