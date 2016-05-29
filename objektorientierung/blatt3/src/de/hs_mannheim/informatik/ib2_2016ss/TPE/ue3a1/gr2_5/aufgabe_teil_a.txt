@@ -1,0 +1,10 @@
+Catch-or-throw Regel:
+
+Jede Exception muss entweder behandelt oder weitergegeben werden.
+
+Exception behandeln: Es wird eine Ausnahmebehandlung durchgeführt und das Programm läuft danach außerhalb des gesamten try-Blocks wieder weiter.
+Exception weitergeben (werfen): Gibt die Exception an die Methode weiter, die diese aufgerufen hat. Diese muss dann wiederum die Exception behandeln oder weitergeben.
+
+
+Beispiel:
+siehe Programm
