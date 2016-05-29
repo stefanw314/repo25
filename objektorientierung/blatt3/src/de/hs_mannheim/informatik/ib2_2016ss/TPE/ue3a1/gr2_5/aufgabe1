@@ -3,16 +3,3 @@ Catch-or-throw Regel:
 Jede Exception muss entweder behandelt oder weitergegeben werden.
 
 Beispiel:
-
-public void vorbereitungEssen() {
-	try {
-		essen();
-	}
-	catch(Exception Kotzen) {
-	    //Behandlung
-	}
-}
-
-public void vorbereitungEssen() throws Kotzen {
-	essen();
-}
