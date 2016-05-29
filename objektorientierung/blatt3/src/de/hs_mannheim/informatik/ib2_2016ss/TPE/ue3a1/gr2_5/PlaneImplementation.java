@@ -9,6 +9,11 @@ public class PlaneImplementation implements Plane {
 	private boolean doorOpen = true;
 	private boolean isFlying = false;
 	
+	/**
+	 * @description: Constructor needs a flight route
+	 * @param flightRoute
+	 * @throws SimulatorConfigurationException
+	 */
 	public PlaneImplementation(FlightRoute flightRoute) throws SimulatorConfigurationException {
 		if(flightRoute != null) {
 			this.flightRoute = flightRoute;
@@ -24,7 +29,11 @@ public class PlaneImplementation implements Plane {
 	public FlightRoute getFlightRoute() {
 		return flightRoute;
 	}
-	
+	/**
+	 * @description: Opens the doors of the plane
+	 * @throws: GeneralFlightSimulatorException if plane is in the air or flies
+	 * 
+	 */
 	public void openDoors() throws GeneralFlightSimulatorException {
 		if(!isFlying && currentHeight == 0 && !doorOpen) {
 			System.out.println("Open door!");
@@ -34,7 +43,10 @@ public class PlaneImplementation implements Plane {
 			throw new GeneralFlightException();
 		}
 	}
-
+	
+	/**
+	 * @description: Closes the door of the plane
+	 */
 	public void closeDoors() {
 		if(currentHeight == 0 && doorOpen) {
 			System.out.println("Close door!");
@@ -45,7 +57,10 @@ public class PlaneImplementation implements Plane {
 		}
 	}
 
-	@Override
+	/**
+	 * @description: Stops the plane if height is zero
+	 * @throws GeneralFlightSimulatorException if height is not zero or is already stopped
+	 */
 	public void stop() throws GeneralFlightSimulatorException {
 		if(isFlying && currentHeight == 0) {
 			System.out.println("Plane stopped!");
@@ -56,7 +71,10 @@ public class PlaneImplementation implements Plane {
 		}
 	}
 
-	@Override
+	/**
+	 * @description: Flies the next kilometer
+	 * @throws: GeneralFlightSimulatorException if something will go wrong
+	 */
 	public void flyNextKilometer(int additionalHeight) throws GeneralFlightSimulatorException {
 		//Set current temp height
 		int tempCurrentHeight = currentHeight + additionalHeight;

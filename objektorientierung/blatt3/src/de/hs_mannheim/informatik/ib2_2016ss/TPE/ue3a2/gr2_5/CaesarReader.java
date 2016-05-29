@@ -19,7 +19,9 @@ public class CaesarReader extends FilterReader {
 	}
 
 	/**
-	 * @description: Overwrite method from FilterReader
+	 * @description: Overwrite method from FilterReader, reads in char buf from from to from+len
+	 * @param from: From - where to start in file
+	 * @param: len: Length - how many chars to write
 	 */
 	public int read(char[] buf, int from, int len) throws IOException {
 		int countBuffer = in.read(buf, from, len);
@@ -28,7 +30,7 @@ public class CaesarReader extends FilterReader {
 	}
 	
 	/**
-	 * @description: Overwrite method from FilterReader
+	 * @description: Overwrite method from Reader, reads a single char
 	 */
 	public int read() throws IOException {
 		int readInt = super.read();
@@ -39,5 +41,18 @@ public class CaesarReader extends FilterReader {
 		
 		return (int) new CrypterCaesar(delta).decrypt("" + (char) readInt).charAt(0);
 	 }
+	
+	/**
+	 * @description: Overwrite method from FilterReader, reads all chars into char array
+	 * @param cbuf: stores read chars
+	 */
+	public int read (char[] cbuf) throws IOException {
+		int len = super.read(cbuf);
+		//Starting at position 0
+		for (int i = 0; i < cbuf.length; i++) {
+			cbuf[i] = (char) (new CrypterCaesar(delta).decrypt("" + (cbuf[i])).charAt(0));
+		}
+		return len;
+	} 
 
 }

@@ -18,6 +18,10 @@ public class CaesarFileEncryptor implements IFileEncryptor {
 	private int shift = 5;
 	
 	@Override
+	/**
+	 * @description encrypts all files in the sourceDirectory and it's sub directory
+	 * @param File sourceDirectory to be encrypted
+	 */
 	public File encrypt(File sourceDirectory) {
 		if(sourceDirectory.exists()) {
 			//Create encrypted folder
@@ -31,16 +35,21 @@ public class CaesarFileEncryptor implements IFileEncryptor {
 			File encryptedFolder = new File(encryptedFolderName);
 			encryptedFolder.mkdir();
 			
+			//Start recursion
 			cryptFileRecursive(encryptedFolderName, sourceDirectory, encryptedFolder, true);
 			
 			return encryptedFolder;
 		}
+		// if sourceDirectory does not exists
 		else {
 			return null;
 		}
 	}
 
 	@Override
+	/**
+	 * @description decrypts all files in the sourceDirectory and it's sub directory)
+	 */
 	public File decrypt(File sourceDirectory) {
 		if(sourceDirectory.exists()) {
 			//Create encrypted folder
@@ -54,17 +63,26 @@ public class CaesarFileEncryptor implements IFileEncryptor {
 			File encryptedFolder = new File(encryptedFolderName);
 			encryptedFolder.mkdir();
 			
+			//starts recursion
 			cryptFileRecursive(encryptedFolderName, sourceDirectory, encryptedFolder, false);
 			
 			return encryptedFolder;
 		}
+		// if sourceDirectory does not exists
 		else {
 			return null;
 		}
 	}
-	
+	/**
+	 * @description: Encrypts or decrypts a file and its sub directories recursively
+	 * @param basePath: the base path
+	 * @param srcFile: the folder or file to be encrypted or decrypted
+	 * @param destFile: the destination file
+	 * @param encrypt: true -> encrypt mode, false -> decrypt mode
+	 */
 	public void cryptFileRecursive(String basePath, File srcFile, File destFile, boolean encrypt) {
 		for(File currentFile: srcFile.listFiles()) {
+			//If is directory, create directory and call recursion for new directory
 			if(currentFile.isDirectory()) {
 				File newDestFile = new File(basePath + "/" + currentFile.getName());
 				basePath = basePath + "/" + currentFile.getName();
@@ -83,17 +101,19 @@ public class CaesarFileEncryptor implements IFileEncryptor {
 				Writer writer = null;
 				
 				try {
+					//Toggle between encrypt and decrypt mode
 					if(encrypt) {
-						reader = new CaesarReader(new FileReader(currentFile), shift);
-						writer = new FileWriter(copiedFile);
-					}
-					else {
 						reader = new FileReader(currentFile);
 						writer = new CaesarWriter(new FileWriter(copiedFile), shift);
+					}
+					else {
+						reader = new CaesarReader(new FileReader(currentFile), shift);
+						writer = new FileWriter(copiedFile);
 					}
 				}
 				catch(IOException e) {}
 				
+				//Queue for saving all chars
 				Queue<Integer> fileChars = new LinkedList<Integer>(); 
 				int currentChar;
 				
@@ -107,7 +127,6 @@ public class CaesarFileEncryptor implements IFileEncryptor {
 				
 				//Write all chars
 				try {
-					writer = new FileWriter(copiedFile);
 					while(!fileChars.isEmpty()) {
 						writer.write("" + (char) (int) fileChars.poll());
 					}
